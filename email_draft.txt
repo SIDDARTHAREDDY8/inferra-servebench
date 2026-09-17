@@ -1,0 +1,19 @@
+[SEND NOTE — not part of the email: attach Resume_AIML.pdf when sending, per standing rule. Route: sasan@inferra.ai, the hiring contact from Inferra's own HN post (item 49525497, 2026-09-16). Do NOT send from the gmail-8 account; use siddarthareddychinthala@gmail.com.]
+
+Subject: one serving config for your whole GPU fleet
+
+Sasan —
+
+Saw your HN post. You're bringing up GPU datacenters and pushing hardware fungibility, and there's one thing that bites every neocloud doing that: serving configs don't transfer. The vLLM flags tuned on an H100 will thrash a 24GB card's KV cache, so each new SKU means another round of manual tuning during bring-up.
+
+I built a small harness for exactly that problem. It sweeps serving configs (tensor parallel, max_num_seqs, batched tokens, KV util, chunked prefill, prefix caching) across GPU SKUs and ranks them by throughput-per-GPU plus a fungibility score, so you can pick one config that degrades least everywhere instead of retuning per SKU. It benchmarks any OpenAI-compatible endpoint, ships with a mock engine and test server so the measurement path is validated, and includes a runbook for producing real numbers on your nodes.
+
+https://github.com/SIDDARTHAREDDY8/inferra-servebench
+
+What you get: a repeatable way to choose a fleet-wide serving default at bring-up, instead of per-SKU folklore. Happy to run it against your stack if you've got a spare node.
+
+I'm Siddartha, an AI software engineer building CV + LiDAR perception at AirTrek Robotics. I have a PR merged into Microsoft's onnxruntime. No sponsorship needed through June 2029 (F-1 OPT).
+
+Worth a 15-minute call next week?
+
+Siddartha
